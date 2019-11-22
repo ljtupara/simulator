@@ -3,7 +3,7 @@ const { Army } = require('./army.class');
 const createModel = require('../../models/army.model');
 const hooks = require('./army.hooks');
 
-module.exports = function model(app) {
+module.exports = function army(app) {
 	const options = {
 		Model: createModel(app),
 		paginate: app.get('paginate'),
