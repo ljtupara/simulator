@@ -9,16 +9,20 @@ module.exports = function model(app) {
 	const { Schema } = mongooseClient;
 	const game = new Schema({
 		status: { type: String, enum: GAME_STATUS, required: true },
-		name: { type: String, required: true },
+		name: { type: String, required: true, unique: true },
 	}, {
 		timestamps: true,
 	});
 
 	// This is necessary to avoid model compilation errors in watch mode
 	// see https://github.com/Automattic/mongoose/issues/1251
+	let gameModel;
 	try {
-		return mongooseClient.model('game');
+		gameModel = mongooseClient.model('game');
 	} catch (e) {
-		return mongooseClient.model('game', game);
+		gameModel = mongooseClient.model('game', game);
 	}
+	app.set('gameModel', gameModel);
+
+	return gameModel;
 };
