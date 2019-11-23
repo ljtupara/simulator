@@ -31,6 +31,7 @@
     "@feathersjs/errors": "^4.3.11",
     "@feathersjs/express": "^4.3.11",
     "@feathersjs/feathers": "^4.3.11",
+    "@feathersjs/rest-client": "^4.3.11",
     "@feathersjs/socketio": "^4.3.11",
     "@feathersjs/transport-commons": "^4.3.11",
     "compression": "^1.7.4",
@@ -40,6 +41,7 @@
     "helmet": "^3.21.2",
     "mongodb-core": "^3.2.7",
     "mongoose": "^5.7.12",
+    "node-fetch": "^2.6.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.2.1"
   },

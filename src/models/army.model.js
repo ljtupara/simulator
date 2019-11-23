@@ -12,7 +12,8 @@ module.exports = function model(app) {
 		name: { type: String, required: true, unique: true },
 		units: { type: Number, required: true },
 		attackStrategy: { type: String, enum: ATTACK_STRATEGIES, required: true },
-		gameRef: { type: Schema.Types.ObjectId, ref: 'game', required: true },
+		gameRef: { type: Schema.Types.ObjectId, ref: 'game', required: false },
+		assigned: { type: Boolean, required: true, default: false },
 	}, {
 		timestamps: true,
 	});
