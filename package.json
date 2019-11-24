@@ -25,7 +25,8 @@
     "dev": "nodemon src/",
     "start": "node src/",
     "mocha": "mocha test/ --recursive --exit",
-    "debug": "node --inspect src/index.js"
+    "debug": "node --inspect src/index.js",
+    "simulator": "node src/simulator.js"
   },
   "dependencies": {
     "@feathersjs/configuration": "^4.3.11",

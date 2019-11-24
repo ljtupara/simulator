@@ -8,38 +8,67 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3.
+For starting simulator following steps need to be performed
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed. 
+2. Make sure you have installed mongodb and that it is running on localhost:27017 
+3. Install your dependencies
 
     ```
     cd path/to/simulator
     npm install
     ```
 
-3. Start your app
+4. Start application
 
     ```
     npm start
     ```
+5. In new terminal start simulator
 
-## Testing
+    ```
+    npm run-script simulator
+    ```
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
+## API calls
 
-## Scaffolding
+There are three feathers services. Game, army and battlog. Here are some actions that can be performed
 
-Feathers has a powerful command line interface. Here are a few things it can do:
+1. Add army
 
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
+   ```
+    POST /army
+    { "name": "First Army",
+      "attackStrategy" : "Random",
+      "startingUnits" : 85
+    }
+   ```
 
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers help                           # Show all commands
-```
+2. List games
 
-## Help
+   ```
+    GET /game
+   ```
+3. Start game
+   
+   ```
+    POST /army
+    {
+      "status": "InProgress",
+      "name": "First game"
+    }
+   ```
 
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+4. Retrive specific game log   ```
+   
+   ```
+    GET /battlelog/?gameRef=5dda9953db419a6597839d21&$sort[createdAt]=1
+
+   ```
+
+5. Reset game
+
+   ```
+    PATCH /game/5dda9953db419a6597839d21
+    { "action": "reset" }
+   ```
