@@ -71,7 +71,7 @@ async function simulator() {
 			const forked = fork('./src/armyExecutor.js', [armiesIds[i]]);
 			armyProcesses.push(forked);
 		}
-		console.log('Symulator started');
+		console.log('Simulator started');
 	} catch (error) {
 		console.log(`Error occurred ${error}`);
 		process.exit(1);

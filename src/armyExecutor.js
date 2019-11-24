@@ -51,6 +51,7 @@ async function getRandom(army) {
 async function attack() {
 	const army = await app.service('army').get(armyId, {});
 	if (army.units <= 0) {
+		console.log(`Army ${armyId} has been destroyed`);
 		process.exit(0); // army is destroyed
 	}
 	let enemy;
@@ -105,6 +106,7 @@ async function attack() {
 async function reload() {
 	const army = await app.service('army').get(armyId, {});
 	if (army.units <= 0) {
+		console.log(`Army ${armyId} has been destroyed`);
 		process.exit(0); // army is destroyed
 	}
 	const enemyResp = await app.service('army').find({
