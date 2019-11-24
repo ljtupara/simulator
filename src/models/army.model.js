@@ -10,6 +10,7 @@ module.exports = function model(app) {
 	const { Schema } = mongooseClient;
 	const army = new Schema({
 		name: { type: String, required: true, unique: true },
+		startingUnits: { type: Number, required: true },
 		units: { type: Number, required: true },
 		attackStrategy: { type: String, enum: ATTACK_STRATEGIES, required: true },
 		gameRef: { type: Schema.Types.ObjectId, ref: 'game', required: false },

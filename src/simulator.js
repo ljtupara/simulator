@@ -16,7 +16,7 @@ const armyProcesses = [];
 
 function createArmyInSystem() {
 	const random = Math.floor(Math.random() * 10000000);
-	const units = Math.floor(Math.random() * 20) + 80; // random number 80-100
+	const startingUnits = Math.floor(Math.random() * 20) + 80; // random number 80-100
 	const attackStrategy = Math.floor(Math.random() * 3);
 	const date = new Date();
 	const name = `Army-${date.getTime()}-${random}`;
@@ -24,7 +24,7 @@ function createArmyInSystem() {
 	const army = {
 		name,
 		attackStrategy: ATTACK_STRATEGIES[attackStrategy],
-		units,
+		startingUnits,
 	};
 
 	return army;
