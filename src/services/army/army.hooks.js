@@ -1,8 +1,15 @@
 const errors = require('@feathersjs/errors');
 
-function validateCreateArmy(context) {
+async function validateCreateArmy(context) {
 	if (!context.data) {
 		throw new errors.BadRequest('There is no data for your army');
+	}
+
+	const gameModel = context.app.get('gameModel');
+	const gameCount = await gameModel.countDocuments({ status: 'InProgress' }).exec();
+
+	if (gameCount > 0) {
+		throw new errors.Forbidden('You cannot create army, there is battle in progress');
 	}
 
 	if (Array.isArray(context.data)) {

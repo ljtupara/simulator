@@ -48,8 +48,6 @@ async function createNewGame() {
 
 	const date = new Date();
 	const game = await app.service('game').create({ status: 'InProgress', name: `Game-${date.getTime()}` });
-	await app.service('army').patch(null, { gameRef: game._id, assigned: true }, { query: { assigned: false } });
-
 	return game;
 }
 

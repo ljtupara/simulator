@@ -20,7 +20,7 @@ function methodNotAllowed(context) {
 /**
  * When reset action is performed, current battle logs are deleted, units reset
  * to initial values and game set to InProgress state
- * @param {*} context 
+ * @param {*} context
  */
 async function handleResetGame(context) {
 	if (context.data && context.data.action === 'reset') {
@@ -39,12 +39,26 @@ async function handleResetGame(context) {
 	}
 }
 
+async function checkAvailableArmies(context) {
+	const armyModel = context.app.get('armyModel');
+	const armiesCount = await armyModel.countDocuments({ gameRef: context.id }).exec();
+
+	if (armiesCount < 10) {
+		throw new errors.Forbidden(`Not enought armies for battle. Available armies ${armiesCount}`);
+	}
+}
+
+async function assignAvailableArmies(context) {
+	const armyModel = context.app.get('armyModel');
+	await armyModel.updateMany({ assigned: false }, { assigned: true, gameRef: context.result._id });
+}
+
 module.exports = {
 	before: {
 		all: [],
 		find: [],
 		get: [],
-		create: [],
+		create: [checkAvailableArmies],
 		update: [methodNotAllowed],
 		patch: [handleResetGame],
 		remove: [],
@@ -54,7 +68,7 @@ module.exports = {
 		all: [fastJoin(armiesViewResolver)],
 		find: [],
 		get: [],
-		create: [],
+		create: [assignAvailableArmies],
 		update: [],
 		patch: [],
 		remove: [],
