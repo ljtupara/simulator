@@ -10,7 +10,8 @@ module.exports = function model(app) {
 	const battlelog = new Schema({
 		actionType: { type: String, enum: ACTION_TYPE, required: true },
 		gameRef: { type: Schema.Types.ObjectId, ref: 'game', required: true },
-		armyRef: { type: Schema.Types.ObjectId, ref: 'army' },
+		armyRef: { type: Schema.Types.ObjectId, ref: 'army', required: true },
+		enemyRef: { type: Schema.Types.ObjectId, ref: 'army', required: false },
 		damageDone: { type: Number },
 		reloadTime: { type: Number },
 	}, {

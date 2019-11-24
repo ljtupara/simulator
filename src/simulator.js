@@ -41,8 +41,9 @@ async function createNewGame() {
 		for (let i = 0; i < armiesNumToCreate; i += 1) {
 			armies.push(createArmyInSystem());
 		}
-		console.log(`armies ${JSON.stringify(armies)}`);
+
 		await app.service('army').create(armies);
+		console.log(`We have created ${armies.length} new armies`);
 	}
 
 	const date = new Date();
@@ -53,34 +54,30 @@ async function createNewGame() {
 }
 
 async function simulator() {
-	const results = await app.service('game').find({ query: { status: 'InProgress' } });
-	let game = null;
-	console.log(`results ${JSON.stringify(results)}`);
+	try {
+		const results = await app.service('game').find({ query: { status: 'InProgress' } });
+		let game = null;
+		console.log(`Game in progress ${results.total}`);
 
-	if (results.data && results.data.length > 0) {
+		if (results.data && results.data.length > 0) {
 		// eslint-disable-next-line prefer-destructuring
-		game = results.data[0];
-	} else {
-		game = await createNewGame();
+			game = results.data[0];
+			console.log(`We are continuing ${game.name}`);
+		} else {
+			game = await createNewGame();
+		}
+		const armies = await app.service('army').find({ gameRef: game._id });
+		const armiesIds = armies.data.map((a) => a._id);
+
+		for (let i = 0; i < armiesIds.length; i += 1) {
+			const forked = fork('./src/armyExecutor.js', [armiesIds[i]]);
+			armyProcesses.push(forked);
+		}
+		console.log('Symulator started');
+	} catch (error) {
+		console.log(`Error occurred ${error}`);
+		process.exit(1);
 	}
-	const armies = await app.service('army').find({ gameRef: game._id });
-	const armiesIds = armies.data.map((a) => a._id);
-
-	for (let i = 0; i < armiesIds.length; i += 1) {
-		const forked = fork('./src/armyExecutor.js', [armiesIds[i]]);
-
-		forked.on('message', (msg) => {
-			console.log('Message from child', msg);
-			if (msg.signal === 'win') {
-				process.exit(1);
-			} else if (msg.signal === 'kill') {
-				console.log(`killed ${msg.armyId}`);
-			}
-		});
-
-		armyProcesses.push(forked);
-	}
-	console.log('back');
 }
 
 simulator();
